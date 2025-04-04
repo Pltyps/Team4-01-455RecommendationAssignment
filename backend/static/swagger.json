@@ -1,0 +1,66 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Recommendation API",
+    "description": "This API provides recommendation data based on collaborative and content-based filtering.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/recommendations/collaborative": {
+      "get": {
+        "summary": "Get collaborative recommendations",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The content ID to get recommendations for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of recommended items",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "contentId is required"
+          }
+        }
+      }
+    },
+    "/recommendations/content": {
+      "get": {
+        "summary": "Get content-based recommendations",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The content ID to get recommendations for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of recommended items",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "contentId is required"
+          }
+        }
+      }
+    }
+  }
+}
