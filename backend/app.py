@@ -50,18 +50,15 @@ def get_content_recommendations():
         return jsonify({"error": "contentId is required"}), 400
 
     try:
-        # Check if the contentId exists as a column in content_df
-        if content_id not in content_df.columns:
-            return jsonify({"error": f"contentId '{content_id}' not found in content recommendations data."}), 404
+        if content_id not in content_df.index:
+            return jsonify({"error": f"contentId '{content_id}' not found."}), 404
 
-        # Retrieve the recommendations for the given contentId
-        content_recs = content_df[content_id].dropna().tolist()
-        content_list = content_recs[:5]
+        similar_items = content_df.loc[content_id].drop(content_id)
+        top_5 = similar_items.sort_values(ascending=False).head(5).index.tolist()
+        return jsonify(top_5)
     except Exception as e:
         print(f"Error fetching content recommendations: {e}")
-        return jsonify({"error": f"Error fetching content recommendations: {e}"}), 500
-
-    return jsonify(content_list)
+        return jsonify({"error": f"Internal error: {e}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
