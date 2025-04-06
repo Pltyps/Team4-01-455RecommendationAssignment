@@ -8,8 +8,8 @@ CORS(app)  # Enable CORS for all routes
 
 # Load the CSV files for collaborative and content filtering
 try:
-    collab_df = pd.read_csv(r'C:\Users\Navin\OneDrive\Desktop\BYU Winter 2025\IS 455\Recommendation\backend\GroupCollaborativeFiltering.csv')
-    content_df = pd.read_csv(r'C:\Users\Navin\OneDrive\Desktop\BYU Winter 2025\IS 455\Recommendation\backend\GroupContentFiltering.csv')
+    collab_df = pd.read_csv(r'Team4-01-455RecommendationAssignment/backend/GroupCollaborativeFiltering.csv')
+    content_df = pd.read_csv(r'Team4-01-455RecommendationAssignment/backend/GroupContentFiltering.csv')
     print("CSV files loaded successfully.")
 except Exception as e:
     print(f"Error loading CSV files: {e}")
@@ -52,10 +52,14 @@ def get_content_recommendations():
     try:
         # Check if the contentId exists as a column in content_df
         if content_id not in content_df.columns:
+            print(f"contentId '{content_id}' not found in content_df columns.")
             return jsonify({"error": f"contentId '{content_id}' not found in content recommendations data."}), 404
 
         # Retrieve the recommendations for the given contentId
         content_recs = content_df[content_id].dropna().tolist()
+        if len(content_recs) == 0:
+            return jsonify({"error": "No recommendations found for this contentId."}), 404
+
         content_list = content_recs[:5]
     except Exception as e:
         print(f"Error fetching content recommendations: {e}")
